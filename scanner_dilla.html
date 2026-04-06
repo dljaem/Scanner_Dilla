@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Scientific Number Scanner</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#eef2f6;
+margin:40px;
+}
+
+.container{
+display:flex;
+gap:40px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+width:50%;
+}
+
+table{
+border-collapse:collapse;
+width:100%;
+margin-top:10px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+input{
+width:75%;
+padding:10px;
+font-size:16px;
+margin-top:10px;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin:5px;
+color:white;
+}
+
+.run{background:#ff4d4d;}
+.check{background:#ff9aa2;}
+.clear{background:#6ec6ff;}
+.examples{background:#4caf50;}
+.copy{background:#4c6ef5;}
+
+.resultBox{
+margin-top:20px;
+padding:15px;
+background:#f8f8f8;
+border-radius:8px;
+}
+
+.yes{
+color:green;
+font-size:24px;
+font-weight:bold;
+}
+
+.no{
+color:red;
+font-size:24px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Contoh Scientific Notation</h2>
+
+<table>
+<tr>
+<th>Decimal notation</th>
+<th>Scientific notation</th>
+</tr>
+
+<tr><td>2</td><td>2 × 10⁰</td></tr>
+<tr><td>300</td><td>3 × 10²</td></tr>
+<tr><td>4321.768</td><td>4.321768 × 10³</td></tr>
+<tr><td>-53000</td><td>-5.3 × 10⁴</td></tr>
+<tr><td>6720000000</td><td>6.72 × 10⁹</td></tr>
+<tr><td>0.2</td><td>2 × 10⁻¹</td></tr>
+<tr><td>987</td><td>9.87 × 10²</td></tr>
+<tr><td>0.00000000751</td><td>7.51 × 10⁻⁹</td></tr>
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h3>Buat scanner yang membaca input lalu menentukan jenis angka</h3>
+
+<input id="inputNumber" placeholder="Masukkan angka">
+<button class="run" onclick="checkNumber()">Run</button>
+
+<br>
+
+<button class="check" onclick="checkNumber()">Check</button>
+<button class="clear" onclick="clearInput()">Clear</button>
+<button class="examples" onclick="example()">Examples</button>
+<button class="copy" onclick="copyResult()">Copy Result</button>
+
+<div class="resultBox">
+<p id="result"></p>
+<p id="type"></p>
+<p id="desc"></p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function checkNumber(){
+
+let value=document.getElementById("inputNumber").value;
+
+let integer=/^-?\d+$/;
+let decimal=/^-?\d+\.\d+$/;
+let scientific=/^-?\d+(\.\d+)?\s*x\s*10\^-?\d+$/i;
+
+let result="";
+let type="";
+let desc="";
+
+if(scientific.test(value)){
+result="YES";
+type="Type: Scientific Number";
+desc=value+" adalah notasi ilmiah.";
+document.getElementById("result").className="yes";
+}
+
+else if(integer.test(value)){
+result="YES";
+type="Type: Integer Number";
+desc='"'+value+'" adalah bilangan bulat, tetapi bukan scientific notation atau decimal.';
+document.getElementById("result").className="yes";
+}
+
+else if(decimal.test(value)){
+result="YES";
+type="Type: Decimal Number";
+desc=value+" adalah bilangan desimal.";
+document.getElementById("result").className="yes";
+}
+
+else{
+result="NO";
+type="Format tidak valid";
+desc="";
+document.getElementById("result").className="no";
+}
+
+document.getElementById("result").innerHTML="Result: "+result;
+document.getElementById("type").innerHTML=type;
+document.getElementById("desc").innerHTML=desc;
+
+}
+
+
+function clearInput(){
+document.getElementById("inputNumber").value="";
+document.getElementById("result").innerHTML="";
+document.getElementById("type").innerHTML="";
+document.getElementById("desc").innerHTML="";
+}
+
+function example(){
+document.getElementById("inputNumber").value="3 x 10^2";
+checkNumber();
+}
+
+function copyResult(){
+let text=document.getElementById("result").innerText+" "+document.getElementById("type").innerText;
+navigator.clipboard.writeText(text);
+alert("Result copied!");
+}
+
+</script>
+
+</body>
+</html>
